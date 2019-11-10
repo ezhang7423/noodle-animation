@@ -38,5 +38,34 @@ html{
 </head>
 <body>
     <div class="stagger-visualizer"></div>
+    <script>
+  const staggerVisualizerEl = document.querySelector('.stagger-visualizer');
+  const fragment = document.createDocumentFragment();
+  const numberOfElements = 81;
+
+  for (let i = 0; i < numberOfElements; i++) {
+    fragment.appendChild(document.createElement('div'));
+  }
+
+  staggerVisualizerEl.appendChild(fragment);
+
+  const staggersAnimation = anime.timeline({
+    targets: '.stagger-visualizer div',
+    easing: 'easeInOutSine',
+    delay: anime.stagger(50),
+    loop: false,
+    autoplay: false,
+    duration: 600,
+    loopComplete: (a) => console.log('end'),
+    //update: () => console.log(staggersAnimation.progress)
+  })
+  .add({
+    rotate: anime.stagger(3, {from: 'center', direction: 'reverse', easing: 'easeInSine'}),
+    translateX: 0,
+    translateY: 0,
+    delay: anime.stagger(10, {from: 'center'})
+  })
+
+  staggersAnimation.play();</script>
 </body>
 </html>
