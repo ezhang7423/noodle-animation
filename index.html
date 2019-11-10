@@ -46,7 +46,7 @@
 <body>
     <div class="stagger-visualizer"></div>
 
-    <button class='loop btn btn-secondary'>Play Again</button>
+    <button onclick="staggersAnimation.play()" class='loop btn btn-secondary'>Play Again</button>
     <script>
  const playAgain = document.querySelector('.loop')
   const staggerVisualizerEl = document.querySelector('.stagger-visualizer');
@@ -75,7 +75,6 @@
     translateY: 0,
     delay: anime.stagger(10, {from: 'center'})
   })
-  playAgain.addEventListener('click', () => staggersAnimation.play())
   staggersAnimation.play();</script>
 </body>
 </html>
