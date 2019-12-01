@@ -24,7 +24,7 @@
 
     .stagger-visualizer {
       display: flex;
-      /* flex-wrap: wrap; */
+      /*fun flex-wrap: wrap; */
       justify-content: center;
       align-items: center;
       width: 58.5vw;
@@ -33,7 +33,7 @@
 
     @media (max-width: 600px) {
       .stagger-visualizer {
-        width: 90vw;
+        /* width: 90vw; */
         height: 90vw;
       }
     }
@@ -48,8 +48,14 @@
 
     .loop {
       margin-left: 10vw;
+
     }
 
+
+    .loop:focus {
+      background-color: #0050a7;
+      border-color: #0062cc;
+    }
 
     .sliders {
       display: flex;
@@ -74,11 +80,10 @@
     .slider {
       -webkit-appearance: none;
       width: 100%;
-      height: 15px;
+      height: 5px;
       border-radius: 5px;
-      background: #d3d3d3;
+      background: #d3d3d3ad;
       outline: none;
-      opacity: 0.7;
       -webkit-transition: .2s;
       transition: opacity .2s;
       margin-bottom: 50px;
@@ -87,10 +92,11 @@
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 25px;
-      height: 25px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
-      background: #4CAF50;
+      background: #007bff;
+      opacity: 1;
       cursor: pointer;
     }
 
@@ -98,7 +104,8 @@
       width: 25px;
       height: 25px;
       border-radius: 50%;
-      background: #4CAF50;
+      background: #007bff;
+      opacity: 1;
       cursor: pointer;
     }
   </style>
@@ -116,11 +123,14 @@
     </div>
   </div>
   <div class="buttons">
-    <buttons class='loopForever btn btn-secondary'>Loop</buttons>
-    <button onclick="staggersAnimation.play()" class='loop btn btn-primary'>Play Again</button>
+    <buttons class='loopForever btn btn-success'>Loop</buttons>
+    <button class='loop btn btn-primary'>Play</button>
   </div>
-  <script>
 
+
+
+
+  <script>
     const widthC = document.getElementById('widthC')
     const width = document.getElementsByClassName('width-value')
     const playAgain = document.querySelector('.loop')
@@ -128,13 +138,12 @@
     const fragment = document.createDocumentFragment();
     const loopB = document.querySelector('.loopForever')
     const maxWidth = document.documentElement.clientWidth * .9;
-
+    let loopBegan, loopCompleted = 0;
     widthC['min'] = maxWidth * .3;
     widthC['max'] = maxWidth;
     widthC['value'] = maxWidth * .65;
 
-
-    const numberOfElements = 81;
+    loopTrue = true;
     width[0].innerHTML = widthC.value + "px";
     widthC.oninput = function () {
       width[0].innerText = this.value + "px";
@@ -142,24 +151,32 @@
     }
 
 
+    const numberOfElements = 81;
     for (let i = 0; i < numberOfElements; i++) {
       x = document.createElement('div')
       x['style'] = `background-color: hsl(${i}, 100%, 50%)`
+      // console.log(x['style'])
       fragment.appendChild(document.createElement('div'));
 
     }
 
     staggerVisualizerEl.appendChild(fragment);
-
     const staggersAnimation = anime.timeline({
       targets: '.stagger-visualizer div',
       easing: 'easeInOutSine',
       delay: anime.stagger(50),
-      loop: false,
+      direction: 'alternate',
+      loop: true,
       autoplay: false,
       duration: 600,
-      //loopComplete: (a) => //console.log(a),
-      //update: () => console.log(staggersAnimation.progress)
+      loopComplete: function (anim) {
+        loopCompleted++;
+        this.loop = !this.loop;
+        if (loopCompleted % 2 == 0 && !loopTrue) {
+          console.log('stop now')
+          this.pause();
+        }
+      }
     })
       .add({
         rotate: anime.stagger(3, { from: 'center', direction: 'reverse', easing: 'easeInSine' }),
@@ -169,12 +186,23 @@
       })
     staggersAnimation.play();
 
-    loopB.addEventListener('click', () => {
+    toggleLoopB = () => {
+      loopB.classList.toggle('btn-success')
+      loopB.classList.toggle('btn-danger')
+    }
+    loopB.addEventListener('click', (event) => {
+      toggleLoopB();
+      loopTrue = !loopTrue
       staggersAnimation.loop = !staggersAnimation.loop
       if (staggersAnimation.loop) {
         staggersAnimation.play()
       }
-      else console.log(staggersAnimation.loop);
+      else staggersAnimation.pause()
+    })
+
+    playAgain.addEventListener('click', (event) => {
+      staggersAnimation.loop = !staggersAnimation.loop
+      staggersAnimation.play();
     })
   </script>
 </body>
