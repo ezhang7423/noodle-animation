@@ -27,7 +27,7 @@
       /* flex-wrap: wrap; */
       justify-content: center;
       align-items: center;
-      width: 450px;
+      width: 58.5vw;
       height: 450px;
     }
 
@@ -47,7 +47,7 @@
     }
 
     .loop {
-      margin: 0 30vw;
+      margin-left: 10vw;
     }
 
 
@@ -55,6 +55,20 @@
       display: flex;
       flex-direction: column;
       width: 200px;
+      align-content: center;
+      justify-content: center;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      justify-items: center;
+    }
+
+    .loopForever {
+      display: flex;
+      margin: auto 0;
     }
 
     .slider {
@@ -100,35 +114,37 @@
       <div><span style="float: left">Width</span><span style="float:right" class='width-value'></span></div>
       <input type="range" min="350" max="650" value="450" class="slider" id="widthC">
     </div>
-    <div class="slidecontainer">
-      <div><span style="float: left">Height</span><span style="float:right" class='height-value'></span></div>
-      <input type="range" min="350" max="650" value="450" class="slider" id="heightC">
-    </div>
   </div>
-  <button onclick="staggersAnimation.play()" class='loop btn btn-secondary'>Play Again</button>
+  <div class="buttons">
+    <buttons class='loopForever btn btn-secondary'>Loop</buttons>
+    <button onclick="staggersAnimation.play()" class='loop btn btn-primary'>Play Again</button>
+  </div>
   <script>
+
     const widthC = document.getElementById('widthC')
-    const heightC = document.getElementById('heightC')
     const width = document.getElementsByClassName('width-value')
-    const height = document.getElementsByClassName('height-value')
     const playAgain = document.querySelector('.loop')
     const staggerVisualizerEl = document.querySelector('.stagger-visualizer');
     const fragment = document.createDocumentFragment();
-    const numberOfElements = 81;
+    const loopB = document.querySelector('.loopForever')
+    const maxWidth = document.documentElement.clientWidth * .9;
 
+    widthC['min'] = maxWidth * .3;
+    widthC['max'] = maxWidth;
+    widthC['value'] = maxWidth * .65;
+
+
+    const numberOfElements = 81;
     width[0].innerHTML = widthC.value + "px";
-    height[0].innerHTML = heightC.value + "px";
     widthC.oninput = function () {
       width[0].innerText = this.value + "px";
       staggerVisualizerEl.style.width = this.value + "px";
+    }
 
-    }
-    heightC.oninput = function () {
-      height[0].innerHTML = this.value + "px";
-      staggerVisualizerEl.style.height = this.value + "px";
-    }
 
     for (let i = 0; i < numberOfElements; i++) {
+      x = document.createElement('div')
+      x['style'] = `background-color: hsl(${i}, 100%, 50%)`
       fragment.appendChild(document.createElement('div'));
 
     }
@@ -142,7 +158,7 @@
       loop: false,
       autoplay: false,
       duration: 600,
-      loopComplete: (a) => console.log('end'),
+      //loopComplete: (a) => //console.log(a),
       //update: () => console.log(staggersAnimation.progress)
     })
       .add({
@@ -151,7 +167,16 @@
         translateY: 0,
         delay: anime.stagger(10, { from: 'center' })
       })
-    staggersAnimation.play();</script>
+    staggersAnimation.play();
+
+    loopB.addEventListener('click', () => {
+      staggersAnimation.loop = !staggersAnimation.loop
+      if (staggersAnimation.loop) {
+        staggersAnimation.play()
+      }
+      else console.log(staggersAnimation.loop);
+    })
+  </script>
 </body>
 
 </html>
