@@ -155,7 +155,6 @@
     for (let i = 0; i < numberOfElements; i++) {
       x = document.createElement('div')
       x['style'] = `background-color: hsl(${i}, 100%, 50%)`
-      // console.log(x['style'])
       fragment.appendChild(document.createElement('div'));
 
     }
@@ -173,7 +172,6 @@
         loopCompleted++;
         this.loop = !this.loop;
         if (loopCompleted % 2 == 0 && !loopTrue) {
-          console.log('stop now')
           this.pause();
         }
       }
