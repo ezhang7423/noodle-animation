@@ -49,12 +49,62 @@
     .loop {
       margin: 0 30vw;
     }
+
+
+    .sliders {
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 15px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+      margin-bottom: 50px;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+    }
   </style>
 </head>
+<!-- https://www.w3schools.com/howto/howto_js_rangeslider.asp -->
+<!-- TODO: add loop button -->
 
 <body>
   <div class="stagger-visualizer"></div>
+  <div class='sliders'>
 
+    <div class="slidecontainer">
+      <div><span style="float: left">Width</span><span style="float:right" class='width-value'>100</span></div>
+      <input type="range" min="1" max="100" value="50" class="slider" id="widthC">
+    </div>
+    <div class="slidecontainer">
+      <div><span style="float: left">Height</span><span style="float:right" class='height-value'>100</span></div>
+      <input type="range" min="1" max="100" value="50" class="slider" id="heightC">
+    </div>
+  </div>
   <button onclick="staggersAnimation.play()" class='loop btn btn-secondary'>Play Again</button>
   <script>
     const playAgain = document.querySelector('.loop')
